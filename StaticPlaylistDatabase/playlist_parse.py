@@ -4,7 +4,7 @@ import sys
 
 sys.path.append("NicheRank/algo_src")
 
-from file_utils import DatasetToDatabase
+from .db_algo.file_utils import DatasetToDatabase
 
 """
     This script is for Generating Your Own database from the Playlist Dataset. 

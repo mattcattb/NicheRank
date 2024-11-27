@@ -53,14 +53,12 @@ sp = Spotify(auth_manager=sp_oauth)
 #this: https://accounts.spotify.com/authorize?client_id=52500f70b3534d0bae16a8efac5a70af&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fcallback&scope=user-read-recently-played&show_dialog=True
 @app.route('/')
 def home():
-    if (user_option == 0):
-        if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-            auth_url = sp_oauth.get_authorize_url()
-            return redirect(auth_url)
-        return redirect(url_for('get_recently_played'))
-    
-    else:
-        return redirect(url_for('get_recently_played'))
+
+    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+        auth_url = sp_oauth.get_authorize_url()
+        return redirect(auth_url)
+    return redirect(url_for('get_recently_played'))
+
 
 
 #this callback function happens when you have logged in- it authorizes with your access token and reroutes you to collecting data
