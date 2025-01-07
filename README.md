@@ -7,7 +7,6 @@ This project analyzes a Spotify user's listening habits and compares them to a l
 This global dataset is parsed from the Spotify 1 Million Playlists database using our own script and functions. This data is then compared with users listening history to find out a users customized popularity score.
 
 
-
 ## Setup Instructions
 
 ### Backend Setup
@@ -44,14 +43,9 @@ To setup the react frontend:
 
 ## General Use Instructions
 
-To use the database, please do the following:
-1. pip install -r requirements.txt
-2. A default database is already implemented. If you would like to change this, see Dataset to Database Extraction below. To then use that database, change line 35 of spotify.py "DATABASE_USED = 'yourDatabaseNameHere'"
-3. python3 NicheRank/manage.py runserver
-4. Open a second terminal.
-5. python spotify.py
-6. go to the http://127.0.0.1:5000 page
+1. A default database is already implemented. If you would like to change this, see Dataset to Database Extraction below. To then use that database, change line 35 of spotify.py "DATABASE_USED = 'yourDatabaseNameHere'"
 7. To use the Spotify API, leave spotify.py line 32 "user_login" as 0. You must log in with these credentials, as Spotify for Developers only lets manually authorized users log in on unpublished projects. [username: AmandaBrannon pw: Workingonit1!] (you can see what I have been listening to! If you give me your full name and email, I can allow up to 25 people access while it is in development mode). Change user_login to 1 through 7, and it will randomly generate a fake user profile with 100000 points (or more) of data, as well as use different sorting types (q=quick, m=merge). If you really want to, these can be manually changed for even more combinations for various user profiles
+
 ## Dataset to Database Extraction
 
 Due to the size of the database, we have already created it on our own. If you would like to generate your own database, do the following: 
@@ -64,61 +58,52 @@ Due to the size of the database, we have already created it on our own. If you w
 
 Keep in mind, it takes around 1.5 minutes to parse 10% of the database, so either keep the value low or give it some time.
 
-## Problem
-Our project aimed to solve the question as to whether a Spotify user is listening to popular or niche music and artists in comparison with the one-million playlist Spotify dataset.
+## Project Details
 
-## Motivation
+### Problem Statement
+The goal of the project was to answer the question: "Is a Spotify user listening to popular or niche music in comparison with a large dataset of playlists?" By analyzing the user's music preferences and comparing them to global data, we can provide insights into how popular or obscure their music tastes are. We also hope to allow users to quickly see their listened to music.
+
+### Motivation
 Our motivation was that Spotify does not have any sort of metrics as to how popular your current listening history is. Through our web application, a user is able to sign into their Spotify account, give access permission, and then be presented with how popular their music taste is, as well as their top songs and artists.
 
 
 ## Tools/Languages/Libraries Used
 
 ### 1. **Frontend**
-- [ReactJS:](https://react.dev/) Utilize ReactJS, a JavaScript framework that provides a foundation for developing dynamic and responsive web applications.
+- [ReactJS:](https://react.dev/) Utilize ReactJS, a JavaScript framework that provides a foundation for developing dynamic and responsive web applications, alongside **Typescript** for enhanced type safety and better development experience.
+
 
 ### 2. **Backend**
-- [Django with RESt:](https://www.django-rest-framework.org/)  Utilize Django with REST framework to build powerful and flexible APIs for web applications.
 
-- [FLASK:](https://flask.palletsprojects.com/en/3.0.x/) Utilize Flask framework to integrate Spotify and communicate with our frontend.
+- [FLASK:](https://flask.palletsprojects.com/en/3.0.x/) Used Flask, a lightweight Python framework, to interact with the Spotify API, manage user authentication, retrieve user data, and serve it to the frontend application
 
 ### 3. **Development Tools**
 - [Visual Studio Code:](https://code.visualstudio.com/) A versatile code editor that provides debugging, task running, and version control for streamlined development.
 
 - [Github:](https://github.com/jlopezmarti20/NicheRank) Version control and collaboration were managed using GitHub, enabling effective team collaboration and code tracking.
 
-## Contributors
 
-### [Jesus Lopez](https://github.com/jlopezmarti20)  
+## Algorithms and Comparison Methodology
 
-**Role:** 
+Our project employs several advanced algorithms and techniques to analyze user listening history and compare it with global playlists:
 
-Frontend Developer
+### 1. Data Parsing and Compression
+* The million-playlist dataset was efficiently parsed and processed using custom algorithms to extract relevant information.
+* Compression and serialization techniques were implemented to reduce the size of the dataset while retaining critical information for analysis.
+ 
+### 2. Popularity Scoring
+* A popularity score is computed by comparing the frequency of user-listened songs and artists against the global playlist dataset.
 
-**Contribution**
+* Metrics account for both local and global trends, providing a balanced assessment of how niche a user's music taste is.
 
-Led the frontend development using ReactJS and DJango with REST Frameworks, creating user interface, including buttons, text fields, and ensuring easy integration between the backend and frontend. 
+### 3. Sorting Algorithms
 
+* Custom implementations of quicksort and mergesort were developed to efficiently sort user listening data:
+    * Quicksort: Optimized for small datasets and quick comparisons.
+    * Mergesort: Designed for stable, large-scale sorting with high accuracy.
+* These algorithms enable sorting by local and global listens, allowing for detailed insights into user preferences.
 
+### 4. Comparison Framework
 
-### [Amanda Brannon](https://github.com/AmandaBrannon)  
-
-**Role:** 
-
-Data retrieval and Backend Developer
-
-**Contribution**
-
-Created and utilized the Spotify API for user authentication and user data extraction to be used in the comparison algorithms. Assisted with integration of the backend and frontend.
-
-
-### [Matthew Boughton](https://github.com/mattcattb)  
-
-**Role:**
-
-Backend Developer
-
-**Contribution**
-
-Created inheritance heirarcy for songs, artists, songstats and artist stats. Parsed the million playlists dataset and created an compression serialization and deserialization workflow. Created greedy user history generation and metrics for scoring users popularity score in comparison to global database. Created the quicksort and mergesort for quickly sorting the listening history by its local listens and according to the global listens, all within a inheritance based sorting structure. Controlled serialization of data into json and control flow of analysis algorithm and population scoring. 
-
-
+* An inheritance-based structure was designed for songs, artists, and their corresponding statistics, ensuring modularity and scalability.
+* This framework facilitates seamless data comparison, serialization into JSON for frontend integration, and robust population scoring mechanisms.
