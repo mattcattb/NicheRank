@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 
-sys.path.append("NicheRank/algo_src")
+sys.path.append("backend/algo_src")
 
 from file_utils import DatasetToDatabase
 
@@ -27,7 +27,7 @@ def handle_lp(args) -> float:
 def main():
     args = parser.parse_args()
     lp = handle_lp(args)
-    playlist_dir = "NicheRank/playlist_dataset"
+    playlist_dir = "NicheRank/dataset"
     playist_path = os.path.join(playlist_dir, "spotify_million_playlist_dataset")
     extractor = DatasetToDatabase(playist_path, profile=args.profile)
     extractor.create_database(load_percent=lp, save=True)

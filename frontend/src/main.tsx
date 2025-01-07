@@ -3,8 +3,6 @@ import { createRoot } from 'react-dom/client'
 import './styles/index.css'
 import App from './App.tsx'
 
-import { BrowserRouter as Router } from 'react-router-dom'
-
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './styles/Theme.tsx';
 

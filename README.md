@@ -1,5 +1,47 @@
 # Niche Song Ranking
 
+## Project Overview
+
+This project analyzes a Spotify user's listening habits and compares them to a large dataset of one million playlists to determine if they are listening to more popular or niche music. Through our web application, users can log into their Spotify account, view their top songs and artists, and see how their music tastes rank in comparison to a global dataset.
+
+This global dataset is parsed from the Spotify 1 Million Playlists database using our own script and functions. This data is then compared with users listening history to find out a users customized popularity score.
+
+
+
+## Setup Instructions
+
+### Backend Setup
+
+To setup the backend which includes the Flask Server and Spotify Parsed Dataset, do the following:
+
+1. **Install Backend Dependencies**:
+    ```bash
+    cd backend
+    pip install -r requirements.txt
+    ```
+
+2. **Set Database**:
+- A default database is already implemented. To use a different database, change the DATABASE_USED variable in spotify.py on line 35 to the name of your database
+
+3. **Run Flask Script**: Open second terminal and in backend run
+    ```bash
+    python3 app.py
+    ```
+    The backend should now be running at http://127.0.0.1:5000.
+
+### Frontend Instructions
+To setup the react frontend:
+1. **Install Frontend Dependencies**:
+    ```bash
+    cd frontend
+    npm install
+    ```
+2. **Run React Development Server**:
+    ```bash
+    npm start
+    ```
+3. Go to ```http://localhost:3000``` for frontend.
+
 ## General Use Instructions
 
 To use the database, please do the following:
