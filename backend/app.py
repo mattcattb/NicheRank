@@ -91,6 +91,61 @@ def get_recently_played():
     redirect_uri = 'http://127.0.0.1:5173/score'
     return redirect(redirect_uri)
 
+@app.route('/recently_listened/popular', methods=['GET'])
+def get_recently_listened_popular():
+    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+        return redirect(sp_oauth.get_authorize_url())
+    
+    # Fetch recently played tracks
+    recently_played = sp.current_user_recently_played(limit=50)
+    items = recently_played.get('items', [])
+    
+    # Extract artist and song data with popularity
+    songs = []
+    artists = {}
+    for item in items:
+        track = item['track']
+        songs.append({
+            'name': track['name'],
+            'popularity': track['popularity'],
+            'artist': ', '.join(artist['name'] for artist in track['artists'])
+        })
+        for artist in track['artists']:
+            artists[artist['name']] = max(artist.get('popularity', 0), artists.get(artist['name'], 0))
+    
+    # Sort by popularity
+    sorted_songs = sorted(songs, key=lambda x: x['popularity'], reverse=True)
+    sorted_artists = sorted(artists.items(), key=lambda x: x[1], reverse=True)
+    
+    return jsonify({
+        'songs': sorted_songs,
+        'artists': [{'name': name, 'popularity': popularity} for name, popularity in sorted_artists]
+    })
+
+@app.route('/recently_listened/most_listened', methods=['GET'])
+def get_most_listened():
+    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+        return redirect(sp_oauth.get_authorize_url())
+    
+    # Fetch recently played tracks
+    recently_played = sp.current_user_recently_played(limit=50)
+    items = recently_played.get('items', [])
+    
+    # Count the frequency of each song
+    song_counts = {}
+    for item in items:
+        track = item['track']
+        song_name = track['name']
+        song_counts[song_name] = song_counts.get(song_name, 0) + 1
+    
+    # Sort by frequency
+    sorted_songs = sorted(song_counts.items(), key=lambda x: x[1], reverse=True)
+    
+    return jsonify({
+        'most_listened_songs': [{'name': name, 'count': count} for name, count in sorted_songs]
+    })
+
+
 @app.route('/user_metrics', methods=['GET'])   #http://127.0.0.1:5000/user_metrics
 def user_metrics():
     if (user_option == 0):

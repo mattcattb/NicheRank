@@ -1,13 +1,9 @@
-import {
-  BrowserRouter as Router, // BrowserRouter for handling routing
-  useLocation, // Hook to access the current location
-} from "react-router-dom";
 import { Grid, Typography, Button } from "@mui/material"; // Importing Material-UI components
 
 export default function HomeView() {
 
   const handleLogin = () => {
-    window.location.href = "http://127.0.0.1:5000/"; // Redirect to Flask backend for authentication
+    window.location.href = "http://127.0.0.1:5000/auth/login"; // Redirect to Flask backend for authentication
   };
 
   return (
