@@ -1,10 +1,19 @@
 import { Grid, Typography, Button } from "@mui/material"; // Importing Material-UI components
 
+const BASE_URL = 'http://localhost:5000';
+
 export default function HomeView() {
 
-  const handleLogin = () => {
-    window.location.href = "http://127.0.0.1:5000/auth/login"; // Redirect to Flask backend for authentication
+  const redirectToSpotify = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/auth/url`);
+      const data = await response.json();
+      window.location.href = data.auth_url; // Redirect to Spotify authorization page
+    } catch (error) {
+      console.error("Error during authorization", error);
+    }
   };
+  
 
   return (
     // Main container that sets the layout, centering, background color, and padding based on the current page
@@ -50,7 +59,7 @@ export default function HomeView() {
             padding: "10px",
             fontSize: "2rem",
           }}
-          onClick={handleLogin} // on click go to spotify auth
+          onClick={redirectToSpotify} // on click go to spotify auth
         >
           Login
         </Button>

@@ -14,11 +14,8 @@ type ArtistStats = {
   mostPopular: any[];
 };
 
+
 export const useStats = () => {
-  const [pageState, setPageState] = useState({
-    error: null, // Holds any error message
-    loading: true
-  });
 
   const [artistStats, setArtistStats] = useState<ArtistStats>({
     mostListened: [],
@@ -32,68 +29,124 @@ export const useStats = () => {
 
   const [popularityScore, setPopularityScore] = useState("0");
 
+  const handleFetchError = async (response: Response) => {
+    if (response.status == 401){
+      const authResponse = await fetch(`${BASE_URL}/auth/url`)
+      const authData = await authResponse.json();
+      window.location.href = authData.auth_url
+
+      return null
+    } 
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Unknown error occurred' }));
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json()
+  };
+
   // Fetch most listened songs
   const fetchMostListenedSongs = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/recently_played/most_listened/songs`);
-      if (!response.ok) throw new Error('Failed to fetch most listened songs');
-      const data = await response.json();
-      setSongStats((prev) => ({ ...prev, mostListened: data.songs }));
+      const response = await fetch(`${BASE_URL}/recently_played/most_listened/songs`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await handleFetchError(response);
+
+      if (data) {
+        setSongStats(prev=>({...prev, mostListened: data.songs}));
+      }
+
     } catch (error) {
-      setPageState({ error: error.message, loading: false });
+      console.error('Error fetching most popular artists:', error);
     }
   };
 
   // Fetch most popular songs
   const fetchMostPopularSongs = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/recently_played/most_popular/songs`);
-      if (!response.ok) throw new Error('Failed to fetch most popular songs');
-      const data = await response.json();
-      setSongStats((prev) => ({ ...prev, mostPopular: data.songs }));
+      const response = await fetch(`${BASE_URL}/recently_played/most_popular/songs`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }        
+      });
+      const data = await handleFetchError(response);
+      if (data){
+        setSongStats(prev => ({...prev, mostPopular:data.songs}))
+      }
+
     } catch (error) {
-      setPageState({ error: error.message, loading: false });
+      console.error('Error fetching most popular artists:', error);
     }
   };
 
   // Fetch most listened artists
   const fetchMostListenedArtists = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/recently_played/most_listened/artists`);
-      if (!response.ok) throw new Error('Failed to fetch most listened artists');
-      const data = await response.json();
-      setArtistStats((prev) => ({ ...prev, mostListened: data.artists }));
+      const response = await fetch(`${BASE_URL}/recently_played/most_listened/artists`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }        
+      });
+
+      const data = await handleFetchError(response);
+      if (data) {
+        setArtistStats(prev => ({...prev, mostListened:data.artists}))
+      }
+      console.log("data: ", data)
     } catch (error) {
-      setPageState({ error: error.message, loading: false });
+      console.error('Error fetching most listened artists:', error);
     }
   };
 
   // Fetch most popular artists
   const fetchMostPopularArtists = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/recently_played/most_popular/artists`);
-      if (!response.ok) throw new Error('Failed to fetch most popular artists');
-      const data = await response.json();
-      setArtistStats((prev) => ({ ...prev, mostPopular: data.artists }));
+      const response = await fetch(`${BASE_URL}/recently_played/most_popular/artists`, {
+        credentials:'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+      const data = await handleFetchError(response);
+      if (data)
+        setArtistStats((prev) => ({ ...prev, mostPopular: data.artists }));
     } catch (error) {
-      setPageState({ error: error.message, loading: false });
+      console.error('Error fetching most popular artists:', error);
     }
   };
 
   // Fetch average popularity score
   const fetchAveragePopularityScore = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/recently_played/average/popularity`);
-      if (!response.ok) throw new Error('Failed to fetch average popularity score');
-      const data = await response.json();
-      setPopularityScore(data.average_popularity.toString());
+      const response = await fetch(`${BASE_URL}/recently_played/average/popularity`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+      const data = await handleFetchError(response);
+      if (data) {
+        setPopularityScore(data.average_popularity.toString());
+
+      }
     } catch (error) {
-      setPageState({ error: error.message, loading: false });
+      console.error('Error fetching average popularity score:', error);
     }
   };
 
   return {
-    pageState,
     artistStats,
     songStats,
     popularityScore,
