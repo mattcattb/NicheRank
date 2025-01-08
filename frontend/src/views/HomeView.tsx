@@ -14,56 +14,24 @@ export default function HomeView() {
     }
   };
   
-
-  return (
-    // Main container that sets the layout, centering, background color, and padding based on the current page
-    <Grid container spacing={1}>
-      <Grid item xs={12} align="center">
-        <Typography
-          component="h4"
-          variant="h4"
-          style={{
-            fontSize: "2.5rem",
-            fontWeight: "bold",
-            position: "relative",
-            top: -100,
-            color: "#fff",
-          }}
-        >
-          Welcome to your Niche Ranking Music!
+  return(
+    <div className="flex flex-col m-3">
+      <Typography variant="h1">Welcome to your Niche Ranking Music!</Typography>
+      <div className="flex flex-col m-10 items-center gap-y-5">
+        <Typography>
+          See how popular your taste is and 
+          who your favorite songs and artists are! 
         </Typography>
-      </Grid>
-      <Grid item xs={12} align="center">
-        <Typography
-          component="h6"
-          variant="h6"
-          style={{
-            fontSize: "2rem",
-            color: "#fff",
-            position: "relative",
-            top: -90,
-          }}
-        >
-          Learn more about your music taste and compare it to others
-          with Obscurify.
-        </Typography>
-      </Grid>
-      <Grid item xs={12} align="center">
         <Button
           color="secondary"
-          variant="contained"
-          style={{
-            minWidth: "200px",
-            height: "200px",
-            borderRadius: "50%",
-            padding: "10px",
-            fontSize: "2rem",
-          }}
+          className="w-20 h-20 rounded-full flex items-center justify-center text-white text-lg"
           onClick={redirectToSpotify} // on click go to spotify auth
         >
           Login
         </Button>
-      </Grid>
-    </Grid>
+      </div>
+
+    </div>
+
   );
 }

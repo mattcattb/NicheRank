@@ -5,7 +5,6 @@ export const theme = createTheme({
     primary: {
       main: '#1DB954',  // Spotify Green
       light: '#191414', // Dark background
-      accent: '#ffffff', // White for elements like text or buttons
       dark: '#004ba0', // Dark blue for accents
     },
     secondary: {

@@ -7,7 +7,6 @@ from sorting import StatSorter, GlobalSorter
 """
     Metrics store information about a users listening history, 
     retrieved from the HistoryAnalyzer class.
-
 """
 
 @dataclass

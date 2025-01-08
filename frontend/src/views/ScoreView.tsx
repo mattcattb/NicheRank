@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-
-import { CircularProgress, Button, Grid, Typography } from '@mui/material';
+import { CircularProgress, Typography, Button } from '@mui/material';
 
 import {FoldableGrid} from "../components/FoldableGrid";
-import ScoreElement from '../components/ui/ScoreElement';
+import MyButton from "../components/ui/MyButton";
 
 import { useNavigate } from 'react-router-dom';
 import { useStats } from '../hooks/useStats';
@@ -65,7 +64,7 @@ export default function ScoreView() {
   }
 
   return (
-  <div className='flex flex-col items-start'> 
+  <div className='p-2 flex flex-col items-center'> 
     <Typography variant='h1' className="text-primary font-bold text-4xl">Your Spotify Results</Typography>
     <div className='buttons-top flex flex-row items-center'>
       <Button onClick={()=>{navigate('/')}}>Back</Button>
