@@ -1,10 +1,9 @@
-import { CircularProgress } from '@mui/material';
-
-import Button from "../components/ui/Button"
 import { useEffect, useState } from 'react'
-import ScoreElement from '../components/ui/ScoreElement';
 
-import { Grid, Typography } from '@mui/material';
+import { CircularProgress, Button, Grid, Typography } from '@mui/material';
+
+import {FoldableGrid} from "../components/FoldableGrid";
+import ScoreElement from '../components/ui/ScoreElement';
 
 import { useNavigate } from 'react-router-dom';
 import { useStats } from '../hooks/useStats';
@@ -49,65 +48,75 @@ export default function ScoreView() {
     fetch_data();
   }, []);
 
-
-
-    if (isLoading) {
-      return (
-        <div>
-          <CircularProgress color="secondary" />
-        </div>
-      );
-    }
-
-    if (error) {
-      return (
-        <div>
-          <Typography color="error">{error}</Typography>
-        </div>
-      );
-    }
-
+  if (isLoading) {
     return (
-    <div style={{
-        height: "100vh",
-        background: "#AD96DC",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "'Roboto', sans-serif",
-    }}> 
-        <Button onClick={()=>{navigate('/')}} text={"back"}/>
-          <Grid container spacing={6} sx={{ mt: 2 }}>
-              <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
-                  <Typography component="h1" color="primary" gutterBottom align="center">
-                      Your Most Listened Artists:
-                  </Typography>
-                  <Typography variant="h1" color="primary">
-                      Your Most Listened Songs:
-                  </Typography>
+      <div>
+        <CircularProgress color="secondary" />
+      </div>
+    );
+  }
 
-                  <Typography component="h3" color="secondary" variant="h3">
-                      Popularity Score: {popularityScore}%
-                  </Typography>
-              </Grid>
-              <Grid container item xs={12} spacing={3}>
-                  <Grid item xs={6} style={{ padding: '20px' }}>
-                      <Grid container direction="column" spacing={2}>
-                          {artistStats.mostListened.map((artist, index) => (
-                              <ScoreElement content={artist} index={index} key={index} />
-                          ))}
-                      </Grid>
-                  </Grid>
-                  {/* Grid item for the top songs list */}
-                  <Grid item xs={6} style={{ padding: '20px' }}>
-                      <Grid container direction="column" spacing={2}>
-                          {songStats.mostListened.map((song, index) => (
-                              <ScoreElement content={song} index={index} key={index} />
-                          ))}
-                      </Grid>
-                  </Grid>
-              </Grid>
-          </Grid>
+  if (error) {
+    return (
+      <div>
+        <Typography color="error">{error}</Typography>
+      </div>
+    );
+  }
+
+  return (
+  <div className='flex flex-col items-start'> 
+      <div className='buttons-top flex flex-row items-start'>
+        <Button onClick={()=>{navigate('/')}}>Back</Button>
+        <Typography variant='h4'>Popularity Score: {popularityScore}</Typography>
+      </div>
+      <div>
+        <div className='popular'>
+          <Typography variant='h2'>Most Popular</Typography>
+          <FoldableGrid gridItems={artistStats.mostPopular.map(item => ({name: item.artist, score: item.avg_popularity}))} ></FoldableGrid>
+        </div>
+
+        <div className='listened'>
+          <Typography variant='h2'>Most Listened</Typography>
+          <FoldableGrid gridItems={artistStats.mostListened.map(item => ({name: item.artist, score: item.avg_popularity}))} ></FoldableGrid>
+
+        </div>
+      </div>
+
+      <div>
+        Popularity Score
+      </div>
+        <Grid container spacing={6} sx={{ mt: 2 }}>
+            <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
+                <Typography component="h1" color="primary" gutterBottom align="center">
+                    Your Most Listened Artists:
+                </Typography>
+                <Typography variant="h1" color="primary">
+                    Your Most Listened Songs:
+                </Typography>
+
+                <Typography component="h3" color="secondary" variant="h3">
+                    Popularity Score: {popularityScore}%
+                </Typography>
+            </Grid>
+            <Grid container item xs={12} spacing={3}>
+                <Grid item xs={6} style={{ padding: '20px' }}>
+                    <Grid container direction="column" spacing={2}>
+                        {artistStats.mostListened.map((artist, index) => (
+                            <ScoreElement content={artist} index={index} key={index} />
+                        ))}
+                    </Grid>
+                </Grid>
+                {/* Grid item for the top songs list */}
+                <Grid item xs={6} style={{ padding: '20px' }}>
+                    <Grid container direction="column" spacing={2}>
+                        {songStats.mostListened.map((song, index) => (
+                            <ScoreElement content={song} index={index} key={index} />
+                        ))}
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
     </div>
   )
 }
