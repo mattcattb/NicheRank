@@ -66,12 +66,12 @@ export default function ScoreView() {
 
   return (
   <div className='flex flex-col items-start'> 
-    <Typography variant='h1'>Your Spotify Results</Typography>
+    <Typography variant='h1' className="text-primary font-bold text-4xl">Your Spotify Results</Typography>
     <div className='buttons-top flex flex-row items-center'>
       <Button onClick={()=>{navigate('/')}}>Back</Button>
-      <Typography variant='h3'>Popularity Score: {popularityScore}</Typography>
+      <Typography variant='h3'>Popularity Score: <b>{popularityScore}</b></Typography>
     </div>
-    <div className='flex flex-row mt-3'>
+    <div className='flex flex-row mt-3 gap-0.5	'>
       <div className='popular'>
         <Typography variant='h2'>Most Popular</Typography>
         <FoldableGrid gridItems={artistStats.mostPopular.map(stat => ({name: stat.name, score: stat.score}))} ></FoldableGrid>
