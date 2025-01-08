@@ -3,10 +3,8 @@ from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
 from flask import session
-from collections import Counter
 from app.config import Config
 from app.utils import get_artist_info, get_song_info
-import sys
 import traceback
 
 
@@ -45,7 +43,7 @@ def require_spotify(f):
         try:
             sp_client, auth_required = get_spotify_client()
             if auth_required:
-                return jsonify({"error:", "Authentication required"}), 401
+                return jsonify({"error:":"Authentication required"}), 401
             g.sp = sp_client  # Attach Spotify client to Flask's `g` context
             return f(*args, **kwargs)
         except Exception as e:
@@ -63,13 +61,16 @@ def get_most_listened_songs():
     try:
         recently_played = g.sp.current_user_recently_played(limit=50)
         items = recently_played.get('items', [])
-        songs = get_song_info(items)
+        song_listens = {}
         
-        # Count frequency of each song
-        song_counter = Counter([song['name'] for song in songs])
-        most_listened_songs = song_counter.most_common()
+        for item in items:
+            song_name = item['track']['name']
+            song_listens[song_name] = song_listens.get(song_name, 0) + 1
+        
+        most_listened_songs = [{'name': song, 'listens': listens} for song, listens in song_listens.items()]
+        sorted_songs = sorted(most_listened_songs, key=lambda x: x['listens'], reverse=True)
 
-        return jsonify({'songs': most_listened_songs})
+        return jsonify({'songs': sorted_songs})
     except Exception as e:
         print(f"Error in get_most_listened_songs: {str(e)}")
         print(traceback.format_exc())
@@ -82,13 +83,19 @@ def get_most_listened_artists():
     try:
         recently_played = g.sp.current_user_recently_played(limit=50)
         items = recently_played.get('items', [])
-        artists = get_artist_info(items)
+        artist_listens = {}
+
+        for item in items:
+            for artist in item['track']['artists']:
+                artist_name = artist['name']
+                artist_listens[artist_name] = artist_listens.get(artist_name, 0) + 1
         
-        # Count frequency of each artist
-        artist_counter = Counter(artists)
-        most_listened_artists = artist_counter.most_common()
+        most_listened_artists = [{'name': artist, 'listens': listens} for artist, listens in artist_listens.items()]
         
-        return jsonify({'artists': most_listened_artists})
+        # Sort by listens in descending order
+        sorted_artists = sorted(most_listened_artists, key=lambda x: x['listens'], reverse=True)
+        
+        return jsonify({'artists': sorted_artists})
     except Exception as e:
         print(f"Error in get_most_popular_artists: {str(e)}")
         print(traceback.format_exc())
@@ -101,10 +108,12 @@ def get_most_popular_songs():
     try:
         recently_played = g.sp.current_user_recently_played(limit=50)
         items = recently_played.get('items', [])
-        songs = get_song_info(items)
-        
+        songs = [
+            {'name': item['track']['name'], 'score': item['track']['popularity']}
+            for item in items
+        ]        
         # Sort songs by popularity
-        sorted_songs = sorted(songs, key=lambda x: x['popularity'], reverse=True)
+        sorted_songs = sorted(songs, key=lambda x: x['score'], reverse=True)
         
         return jsonify({'songs': sorted_songs})
     except Exception as e:
@@ -124,32 +133,27 @@ def get_most_popular_artists():
         artist_popularity = {}
 
         for item in items:
-            track = item['track']
-            track_name = track['name']
-            track_popularity = track['popularity']
-            
-            print(f"Track: {track_name}")
+            track_popularity = item['track']['popularity']
             
             # Iterate through the track's artists
-            for artist in track['artists']:
+            for artist in item['track']['artists']:
                 artist_name = artist['name']
-                print(f"Artist: {artist_name}")
                 
                 if artist_name not in artist_popularity:
-                    artist_popularity[artist_name] = {'total_popularity': 0, 'track_count': 0}
+                    artist_popularity[artist_name] = {'total_score': 0, 'track_count': 0}
                 
                 # Accumulate popularity and count of tracks for each artist
-                artist_popularity[artist_name]['total_popularity'] += track_popularity
+                artist_popularity[artist_name]['total_score'] += track_popularity
                 artist_popularity[artist_name]['track_count'] += 1
         
         # Calculate average popularity per artist
         avg_artist_popularity = [
-            {'artist': artist, 'avg_popularity': data['total_popularity'] / data['track_count']}
+            {'name': artist, 'score': data['total_score'] / data['track_count']}
             for artist, data in artist_popularity.items()
         ]
         
         # Sort artists by average popularity in descending order
-        sorted_artists = sorted(avg_artist_popularity, key=lambda x: x['avg_popularity'], reverse=True)
+        sorted_artists = sorted(avg_artist_popularity, key=lambda x: x['score'], reverse=True)
 
         return jsonify({'artists': sorted_artists})
     

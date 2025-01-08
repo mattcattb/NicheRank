@@ -66,57 +66,22 @@ export default function ScoreView() {
 
   return (
   <div className='flex flex-col items-start'> 
-      <div className='buttons-top flex flex-row items-start'>
-        <Button onClick={()=>{navigate('/')}}>Back</Button>
-        <Typography variant='h4'>Popularity Score: {popularityScore}</Typography>
-      </div>
-      <div>
-        <div className='popular'>
-          <Typography variant='h2'>Most Popular</Typography>
-          <FoldableGrid gridItems={artistStats.mostPopular.map(item => ({name: item.artist, score: item.avg_popularity}))} ></FoldableGrid>
-        </div>
-
-        <div className='listened'>
-          <Typography variant='h2'>Most Listened</Typography>
-          <FoldableGrid gridItems={artistStats.mostListened.map(item => ({name: item.artist, score: item.avg_popularity}))} ></FoldableGrid>
-
-        </div>
-      </div>
-
-      <div>
-        Popularity Score
-      </div>
-        <Grid container spacing={6} sx={{ mt: 2 }}>
-            <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
-                <Typography component="h1" color="primary" gutterBottom align="center">
-                    Your Most Listened Artists:
-                </Typography>
-                <Typography variant="h1" color="primary">
-                    Your Most Listened Songs:
-                </Typography>
-
-                <Typography component="h3" color="secondary" variant="h3">
-                    Popularity Score: {popularityScore}%
-                </Typography>
-            </Grid>
-            <Grid container item xs={12} spacing={3}>
-                <Grid item xs={6} style={{ padding: '20px' }}>
-                    <Grid container direction="column" spacing={2}>
-                        {artistStats.mostListened.map((artist, index) => (
-                            <ScoreElement content={artist} index={index} key={index} />
-                        ))}
-                    </Grid>
-                </Grid>
-                {/* Grid item for the top songs list */}
-                <Grid item xs={6} style={{ padding: '20px' }}>
-                    <Grid container direction="column" spacing={2}>
-                        {songStats.mostListened.map((song, index) => (
-                            <ScoreElement content={song} index={index} key={index} />
-                        ))}
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
+    <Typography variant='h1'>Your Spotify Results</Typography>
+    <div className='buttons-top flex flex-row items-center'>
+      <Button onClick={()=>{navigate('/')}}>Back</Button>
+      <Typography variant='h3'>Popularity Score: {popularityScore}</Typography>
     </div>
-  )
+    <div className='flex flex-row mt-3'>
+      <div className='popular'>
+        <Typography variant='h2'>Most Popular</Typography>
+        <FoldableGrid gridItems={artistStats.mostPopular.map(stat => ({name: stat.name, score: stat.score}))} ></FoldableGrid>
+      </div>
+
+      <div className='listened'>
+        <Typography variant='h2'>Most Listened</Typography>
+        <FoldableGrid gridItems={artistStats.mostListened.map(item => ({name: item.name, score: item.listens}))} ></FoldableGrid>
+
+      </div>
+    </div>
+  </div>)
 }

@@ -24,7 +24,6 @@ export const FoldableGrid = (props: Props) => {
   const displayedItems = isFolded 
   ? props.gridItems.slice(0, maxItemsFolded) 
   : props.gridItems;
-  console.log(props.gridItems)
 
   return (
     <div className='flex flex-col items-stretch'>

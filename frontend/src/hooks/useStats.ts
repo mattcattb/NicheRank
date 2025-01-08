@@ -4,25 +4,14 @@ import { useState } from "react";
 
 const BASE_URL = 'http://localhost:5000';
 
-type SongStats = {
-  mostListened: any[];
-  mostPopular: any[];
-};
-
-type ArtistStats = {
-  mostListened: any[];
-  mostPopular: any[];
-};
-
-
 export const useStats = () => {
 
-  const [artistStats, setArtistStats] = useState<ArtistStats>({
+  const [artistStats, setArtistStats] = useState({
     mostListened: [],
     mostPopular: []
   });
 
-  const [songStats, setSongStats] = useState<SongStats>({
+  const [songStats, setSongStats] = useState({
     mostListened: [],
     mostPopular: []
   });
