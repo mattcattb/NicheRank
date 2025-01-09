@@ -2,10 +2,13 @@
 
 ## Project Overview
 
-This project analyzes a Spotify user's listening habits and compares them to a large dataset of one million playlists to determine if they are listening to more popular or niche music. Through our web application, users can log into their Spotify account, view their top songs and artists, and see how their music tastes rank in comparison to a global dataset.
+This project takes a users listening history and allows you to see your most popular and most listened artist and songs.
+
+We are currently building to allow a user to see how their popularity score compares to a past snapshow of listening through a global dataset.
 
 This global dataset is parsed from the Spotify 1 Million Playlists database using our own script and functions. This data is then compared with users listening history to find out a users customized popularity score.
 
+![alt text](./assets/site_img.png)
 
 ## Setup Instructions
 
