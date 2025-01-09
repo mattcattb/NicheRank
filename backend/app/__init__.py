@@ -1,4 +1,3 @@
-import os
 from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -35,8 +34,10 @@ def create_app():
     
     from app.routes.auth_spotify import auth_spotify_bp
     from app.routes.recently_played import recently_played_bp
+    from app.routes.old_database import old_database_bp
 
     app.register_blueprint(auth_spotify_bp, url_prefix='/auth')
     app.register_blueprint(recently_played_bp, url_prefix='/recently_played')
+    app.register_blueprint(old_database_bp, url_prefix='/old_db')
 
     return app

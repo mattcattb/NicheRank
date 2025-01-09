@@ -9,7 +9,6 @@ This global dataset is parsed from the Spotify 1 Million Playlists database usin
 
 ## Setup Instructions
 
-
 ### Setting Up Spotify Authentication
 
 To authenticate users via Spotify, you'll need to configure the Spotify API Developer settings:
@@ -71,7 +70,7 @@ To setup the react frontend:
     ```bash
     npm start
     ```
-3. Go to ```http://localhost:3000``` for frontend.
+3. Go to ```http://localhost:5174``` for frontend.
 
 ## General Use Instructions
 
@@ -102,7 +101,7 @@ Our motivation was that Spotify does not have any sort of metrics as to how popu
 ## Tools/Languages/Libraries Used
 
 ### 1. **Frontend**
-- [ReactJS:](https://react.dev/) Utilize ReactJS, a JavaScript framework that provides a foundation for developing dynamic and responsive web applications, alongside **Typescript** for enhanced type safety and better development experience.
+- [ReactJS:](https://react.dev/) Utilize ReactJS, a JavaScript framework that provides a foundation for developing dynamic and responsive web applications, alongside **Typescript** for enhanced type safety and better development experience. We use Tailwind and Material UI for clean and concise UI options.
 
 
 ### 2. **Backend**
