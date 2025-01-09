@@ -8,9 +8,8 @@ type Props = {
 export default function MyButton( props:Props) {
   return (
     <Button
-    className=''
     color="primary"
-    variant="contained"
+    className='px-4 py-2'
     onClick={props.onClick}
     >
       {props.children}

@@ -44,6 +44,13 @@ export const theme = createTheme({
             backgroundColor: '#004ba0',  // Darker green on hover
           },
         },
+        contained: {
+          backgroundColor: '#1DB954',  // Green background for buttons
+          color: '#ffffff',  // White text
+          '&:hover': {
+            backgroundColor: '#004ba0',  // Darker green on hover
+          },
+        },
       },
     },
   }

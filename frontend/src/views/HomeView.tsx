@@ -15,7 +15,7 @@ export default function HomeView() {
   };
   
   return(
-    <div className="flex flex-col m-3">
+    <div className="flex flex-col m-10 items-center">
       <Typography variant="h1">Welcome to your Niche Ranking Music!</Typography>
       <div className="flex flex-col m-10 items-center gap-y-5">
         <Typography>
@@ -23,8 +23,8 @@ export default function HomeView() {
           who your favorite songs and artists are! 
         </Typography>
         <Button
-          color="secondary"
-          className="w-20 h-20 rounded-full flex items-center justify-center text-white text-lg"
+          variant="contained"
+          className="bg-[#1DB954] text-white hover:bg-[#004ba0] px-6 py-2 rounded-lg"
           onClick={redirectToSpotify} // on click go to spotify auth
         >
           Login

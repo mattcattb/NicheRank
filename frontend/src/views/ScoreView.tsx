@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { CircularProgress, Typography, Button } from '@mui/material';
 
-import {FoldableGrid} from "../components/FoldableGrid";
-import MyButton from "../components/ui/MyButton";
+import { FoldableGrid } from '../components/FoldableGrid';
+import MyButton from '../components/ui/MyButton';
 
 import { useNavigate } from 'react-router-dom';
 import { useStats } from '../hooks/useStats';
 
 export default function ScoreView() {
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [statType, setStatType] = useState<'popular' | 'listened'>('popular');
 
   const {
     artistStats,
@@ -20,31 +20,34 @@ export default function ScoreView() {
     fetchMostPopularSongs,
     fetchMostListenedArtists,
     fetchMostPopularArtists,
-    fetchAveragePopularityScore
-  } = useStats();  
+    fetchAveragePopularityScore,
+  } = useStats();
 
   const navigate = useNavigate();
 
-  // Fetch most listened songs
+  const toggleStatType = () => {
+    setStatType((prev) => (prev === 'popular' ? 'listened' : 'popular'));
+  };
+
   useEffect(() => {
-    const fetch_data = async () => {
+    const fetchData = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         await Promise.all([
           fetchAveragePopularityScore(),
           fetchMostListenedSongs(),
           fetchMostListenedArtists(),
           fetchMostPopularSongs(),
-          fetchMostPopularArtists()          
-        ])
+          fetchMostPopularArtists(),
+        ]);
       } catch (error) {
-        setError("An error occured while fetching spotify stats data.");
-        console.error(error)
+        setError('An error occurred while fetching Spotify stats data.');
+        console.error(error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
-    fetch_data();
+    };
+    fetchData();
   }, []);
 
   if (isLoading) {
@@ -63,24 +66,48 @@ export default function ScoreView() {
     );
   }
 
+  const createMediaGridItems = (stats, type) => {
+    if (type === 'popular') {
+      return stats.mostPopular.map((stat) => ({
+        name: stat.name,
+        score: stat.score,
+      }));
+    } else {
+      return stats.mostListened.map((stat) => ({
+        name: stat.name,
+        score: stat.listens,
+      }));
+    }
+  };
+
   return (
-  <div className='p-2 flex flex-col items-center'> 
-    <Typography variant='h1' className="text-primary font-bold text-4xl">Your Spotify Results</Typography>
-    <div className='buttons-top flex flex-row items-center'>
-      <Button onClick={()=>{navigate('/')}}>Back</Button>
-      <Typography variant='h3'>Popularity Score: <b>{popularityScore}</b></Typography>
-    </div>
-    <div className='flex flex-row mt-3 gap-0.5	'>
-      <div className='popular'>
-        <Typography variant='h2'>Most Popular</Typography>
-        <FoldableGrid gridItems={artistStats.mostPopular.map(stat => ({name: stat.name, score: stat.score}))} ></FoldableGrid>
+    <div className="m-4 p-2 flex flex-col items-center gap-4">
+      <Typography variant="h1" className="text-primary font-bold text-4xl">
+        Your Spotify Results
+      </Typography>
+      <div className="buttons-top flex flex-row items-center gap-4">
+        <Button onClick={() => navigate('/')}>Back</Button>
+        <Typography variant="h3">
+          Popularity Score: <b>{popularityScore}</b>
+        </Typography>
+        <MyButton onClick={toggleStatType}>
+          {statType === 'popular' ? 'Show Most Listened' : 'Show Most Popular'}
+        </MyButton>
       </div>
-
-      <div className='listened'>
-        <Typography variant='h2'>Most Listened</Typography>
-        <FoldableGrid gridItems={artistStats.mostListened.map(item => ({name: item.name, score: item.listens}))} ></FoldableGrid>
-
+      <div className="flex flex-row mt-3 gap-4">
+        <div className="artists">
+          <Typography variant="h2">
+            Artists ({statType === 'popular' ? 'Most Popular' : 'Most Listened'})
+          </Typography>
+          <FoldableGrid grid={createMediaGridItems(artistStats, statType)} />
+        </div>
+        <div className="songs">
+          <Typography variant="h2">
+            Songs ({statType === 'popular' ? 'Most Popular' : 'Most Listened'})
+          </Typography>
+          <FoldableGrid grid={createMediaGridItems(songStats, statType)} />
+        </div>
       </div>
     </div>
-  </div>)
+  );
 }
