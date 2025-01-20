@@ -69,7 +69,6 @@ def get_most_listened_songs():
         
         most_listened_songs = [{'name': song, 'listens': listens} for song, listens in song_listens.items()]
         sorted_songs = sorted(most_listened_songs, key=lambda x: x['listens'], reverse=True)
-
         return jsonify({'songs': sorted_songs})
     except Exception as e:
         print(f"Error in get_most_listened_songs: {str(e)}")
@@ -108,13 +107,21 @@ def get_most_popular_songs():
     try:
         recently_played = g.sp.current_user_recently_played(limit=50)
         items = recently_played.get('items', [])
-        songs = [
-            {'name': item['track']['name'], 'score': item['track']['popularity']}
-            for item in items
+        
+        song_popularity = {}
+        
+        for item in items:
+            track_popularity = item['track']['popularity']
+            track_name = item['track']['name']
+            song_popularity[track_name] = track_popularity
+        
+        song_popularity = [
+            {'name': song_name, 'score': data}
+            for song_name, data in song_popularity.items()
         ]        
         # Sort songs by popularity
-        sorted_songs = sorted(songs, key=lambda x: x['score'], reverse=True)
-        
+        sorted_songs = sorted(song_popularity, key=lambda x: x['score'], reverse=True)
+        print("Most popular songs: ", sorted_songs)
         return jsonify({'songs': sorted_songs})
     except Exception as e:
         print(f"Error in get_most_popular_songs: {str(e)}")

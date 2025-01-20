@@ -31,14 +31,17 @@ export const FoldableGrid = (props: Props) => {
   };
 
 
-  // Get the items to display, optionally reversed
-  const displayedItems = isFolded
-    ? props.grid.slice(0, maxItemsFolded)
-    : props.grid;
+  const displayedItems = useMemo(() => {
+    let items = isFolded 
+      ? props.grid.slice(0, maxItemsFolded)
+      : props.grid;
 
-  const finalItems = useMemo(() => {
-    return reverse ? [...displayedItems].reverse() : displayedItems;
-  }, [displayedItems, reverse]);
+    if (reverse) {
+      items = [...items].reverse();
+    }
+
+    return items;
+  }, [props.grid, isFolded, reverse]);
   
   return (
     <div className="flex flex-col items-start mt-3 px-3">
@@ -51,11 +54,11 @@ export const FoldableGrid = (props: Props) => {
         </MyButton>
       </div>
       <List>
-        {finalItems.map((item, idx) => {
-          const item_position = reverse ? finalItems.length - idx : idx + 1;
+        {displayedItems.map((item, idx) => {
+          const itemPosition = reverse ? props.grid.length - idx : idx + 1;
           return (
             <ListItem key={`${item.name} ${item.score.toFixed(3)}`}>
-              {item_position}. {item.name} - {item.score.toFixed(0) || 'N/A'}
+              {itemPosition}. {item.name} - {item.score.toFixed(0) || 'N/A'}
             </ListItem>
           );
         })}

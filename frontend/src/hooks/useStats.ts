@@ -47,6 +47,7 @@ export const useStats = () => {
 
       if (data) {
         setSongStats(prev=>({...prev, mostListened: data.songs}));
+        console.log("Most listened songs: ", data)
       }
 
     } catch (error) {
@@ -67,6 +68,7 @@ export const useStats = () => {
       const data = await handleFetchError(response);
       if (data){
         setSongStats(prev => ({...prev, mostPopular:data.songs}))
+        console.log("Most popular songs: ", data)
       }
 
     } catch (error) {
@@ -89,7 +91,7 @@ export const useStats = () => {
       if (data) {
         setArtistStats(prev => ({...prev, mostListened:data.artists}))
       }
-      console.log("data: ", data)
+      console.log("most listened to artists: ", data)
     } catch (error) {
       console.error('Error fetching most listened artists:', error);
     }
@@ -108,6 +110,7 @@ export const useStats = () => {
       const data = await handleFetchError(response);
       if (data)
         setArtistStats((prev) => ({ ...prev, mostPopular: data.artists }));
+        console.log("Most popular artists: ", data)
     } catch (error) {
       console.error('Error fetching most popular artists:', error);
     }
@@ -126,6 +129,7 @@ export const useStats = () => {
       const data = await handleFetchError(response);
       if (data) {
         setPopularityScore(data.average_popularity.toString());
+        console.log("Average popularity score: ", data)
 
       }
     } catch (error) {

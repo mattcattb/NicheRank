@@ -38,7 +38,6 @@ To authenticate users via Spotify, you'll need to configure the Spotify API Deve
 
 5. **Set Up Authentication**:
     - Make sure the `user_login` variable in `spotify.py` (line 32) is set to 0 to use manual credentials (for development), or set it to 1-7 to generate fake user profiles for testing.
-    - You must log in with the credentials provided (username: `AmandaBrannon`, password: `Workingonit1!`) while in development mode. If you want to grant access to more users, provide their name and email, and I can allow up to 25 users access.
 
 6. **Login and Authorization**:
     - When running the app, the user will be prompted to log in via Spotify and grant permissions for your application to access their account data.
