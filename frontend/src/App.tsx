@@ -1,14 +1,16 @@
 
-import { BrowserRouter as Router } from 'react-router-dom';
-import AppRoutes from './routes/Routes';
+import { Route, Routes } from 'react-router-dom';
+import HomeView from './views/HomeView';
+import ScoreView from './views/ScoreView';
 
 function App() {
 
   return (
     <div>
-      <Router>
-        <AppRoutes/>
-      </Router>
+      <Routes>
+        <Route path="/" element={<HomeView />} />
+        <Route path="/score" element={<ScoreView />} />
+      </Routes>
     </div>
   )
 }

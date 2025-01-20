@@ -7,6 +7,8 @@ import MyButton from '../components/ui/MyButton';
 import { useNavigate } from 'react-router-dom';
 import { useStats } from '../hooks/useStats';
 
+// TODO - add loaders to when loading stats, add skeleton stats
+
 export default function ScoreView() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,32 +82,38 @@ export default function ScoreView() {
     }
   };
 
+  // TODO - spacing graphs better 
+  // TODO - remove MUI for daisychain
+
   return (
-    <div className="m-4 p-2 flex flex-col items-center gap-4">
-      <Typography variant="h1" className="text-primary font-bold text-4xl">
-        Your Spotify Results
-      </Typography>
-      <div className="buttons-top flex flex-row items-center gap-4">
-        <Button onClick={() => navigate('/')}>Back</Button>
-        <Typography variant="h3">
-          Popularity Score: <b>{popularityScore}</b>
+    <div className='h-screen'>
+
+      <div className="m-4 p-2 flex flex-col items-center gap-4 pt-20">
+        <Typography variant="h1" className="text-primary font-bold text-4xl">
+          Your Spotify Results
         </Typography>
-        <MyButton onClick={toggleStatType}>
-          {statType === 'popular' ? 'Show Most Listened' : 'Show Most Popular'}
-        </MyButton>
-      </div>
-      <div className="flex flex-row mt-3 gap-4">
-        <div className="artists">
-          <Typography variant="h2">
-            Artists ({statType === 'popular' ? 'Most Popular' : 'Most Listened'})
+        <div className="buttons-top flex flex-row items-center gap-4">
+          <Button onClick={() => navigate('/')}>Back</Button>
+          <Typography variant="h3">
+            Popularity Score: <b>{popularityScore}</b>
           </Typography>
-          <FoldableGrid grid={createMediaGridItems(artistStats, statType)} />
+          <MyButton onClick={toggleStatType}>
+            {statType === 'popular' ? 'Show Most Listened' : 'Show Most Popular'}
+          </MyButton>
         </div>
-        <div className="songs">
-          <Typography variant="h2">
-            Songs ({statType === 'popular' ? 'Most Popular' : 'Most Listened'})
-          </Typography>
-          <FoldableGrid grid={createMediaGridItems(songStats, statType)} />
+        <div className="flex flex-row justify-evenly mt-3 gap-10">
+          <div className="flex flex-col">
+            <h1 className='text-3xl font-bold'>
+              Artists ({statType === 'popular' ? 'Most Popular' : 'Most Listened'})
+            </h1>
+            <FoldableGrid grid={createMediaGridItems(artistStats, statType)} />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-3xl font-bold">
+              Songs ({statType === 'popular' ? 'Most Popular' : 'Most Listened'})
+            </h1>
+            <FoldableGrid grid={createMediaGridItems(songStats, statType)} />
+          </div>
         </div>
       </div>
     </div>

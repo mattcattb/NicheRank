@@ -2,6 +2,8 @@ import { useState } from "react";
 
 const BASE_URL = 'http://localhost:5000';
 
+// TODO - use zustand to better organize this
+
 export const useStats = () => {
 
   const [artistStats, setArtistStats] = useState({

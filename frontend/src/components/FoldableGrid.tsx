@@ -32,13 +32,11 @@ export const FoldableGrid = (props: Props) => {
 
 
   const displayedItems = useMemo(() => {
-    let items = isFolded 
-      ? props.grid.slice(0, maxItemsFolded)
-      : props.grid;
+    const fullGrid = reverse ? [...props.grid].reverse() : props.grid;
 
-    if (reverse) {
-      items = [...items].reverse();
-    }
+
+    const items = isFolded
+      ? fullGrid.slice(0, maxItemsFolded) : fullGrid;
 
     return items;
   }, [props.grid, isFolded, reverse]);
